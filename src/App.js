@@ -1,11 +1,26 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import './App.scss';
+import { Outlet } from 'react-router-dom';
+import Header from "./components/Header/Header";
 
-
-import Header from './components/Header/header';
 
 const App = () => {
   return (
     <div className="App">
-      <Header />
+
+      <div className='header-container'>
+        <Header />
+      </div>
+      <div className='main-container'>
+
+        <div className='sidenav-container'>
+
+        </div>
+        <div className='main-container'>
+          <Outlet />
+        </div>
+      </div>
+
     </div>
   );
 }

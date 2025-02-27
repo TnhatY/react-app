@@ -1,0 +1,54 @@
+.App {
+    .header-container {
+        .navbar-expand-lg {
+            .navbar-nav {
+                z-index: 10;
+                background-color: rgba(0, 0, 0, 0) !important;
+
+                .nav-link {
+                    &.active {
+                        color: #00bff0;
+                        font-weight: bold;
+                    }
+                }
+            }
+
+        }
+    }
+}
+
+.btn-login {
+    border-style: none;
+    background-color: transparent;
+    margin-right: 10px;
+    font-weight: 700;
+}
+
+.btn-login:hover {
+    color: #00bff0;
+
+}
+
+.btn-signup {
+    border-radius: 10px;
+    background-color: rgba(1, 1, 1, 1);
+    color: white;
+    margin-right: 10px;
+    border-style: none;
+}
+
+.btn-signup:hover {
+    background-color: rgba(1, 1, 1, 0.7);
+    border-radius: 15px;
+}
+
+.navbar-brand {
+    z-index: 10;
+    opacity: 0.6;
+}
+
+video {
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+}
