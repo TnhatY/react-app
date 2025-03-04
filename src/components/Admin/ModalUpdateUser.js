@@ -1,21 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './ManageUsser.scss';
 import { IoIosAddCircle } from "react-icons/io";
 import { toast } from 'sonner';
-import { postCreateNewUser } from '../../services/apiService';
-
-const ModelCreateUser = (props) => {
-    const { show, setShow } = props
+import { putUpdateUser } from '../../services/apiService';
+import _ from 'lodash';
+const ModalUpdateUser = (props) => {
+    const { show, setShow, userUpdate, resetUpdateUser } = props
 
     const handleClose = () => {
         setShow(false)
         setEmail("")
         setPassword("")
         setUsername("")
+        resetUpdateUser();
 
     };
+
+
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -32,6 +35,17 @@ const ModelCreateUser = (props) => {
         }
     }
 
+    useEffect(() => {
+        if (!_.isEmpty(userUpdate)) {
+            setEmail(userUpdate.email)
+            setPassword(userUpdate.password)
+            setUsername(userUpdate.username)
+            if (userUpdate.image) {
+                setPreviewImage(`data:image/jpeg;base64,${userUpdate.image}`)
+            }
+        }
+    }, [userUpdate])
+
     const validateEmail = (email) => {
         return String(email)
             .toLowerCase()
@@ -40,32 +54,31 @@ const ModelCreateUser = (props) => {
             );
     };
 
-    const submitCreateUser = async () => {
+    const submitUpdateUser = async () => {
         //validate
         if (!validateEmail(email)) {
             toast.error('Email không hợp lệ! Vui lòng nhập đúng định dạng.', { duration: 3000 });
             return;
         }
-        if (!password) {
-            toast.error('Vui lòng nhập password')
-            return;
-        }
+
         if (!username) {
             toast.error('Vui lòng nhập username')
             return;
         }
 
         //submit data
-        let data = await postCreateNewUser(email, password, username, role, image)
+        let data = await putUpdateUser(userUpdate.id, username, role, image)
         if (data && data.EC === 0) {
-            toast.success('Thêm thành công!');
+            toast.success('Cập nhật thông tin thành công!');
             handleClose();
-            await props.fetchListUser(1);
+            await props.fetchListUser(props.currentPage);
         }
         else {
             toast.error(data.EM)
         }
     }
+
+    console.log(userUpdate)
 
     return (
         <div>
@@ -74,17 +87,17 @@ const ModelCreateUser = (props) => {
 
             <Modal show={show} onHide={handleClose} backdrop='static' className='modal-create-user' >
                 <Modal.Header closeButton>
-                    <Modal.Title>Add User</Modal.Title>
+                    <Modal.Title>Update a user</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form className="row g-3">
                         <div className="col-md-6">
                             <label className="form-label">Email</label>
-                            <input type="email" className="form-control" value={email} onChange={(event) => setEmail(event.target.value)} />
+                            <input type="email" className="form-control" value={email} disabled onChange={(event) => setEmail(event.target.value)} />
                         </div>
                         <div className="col-md-6">
                             <label className="form-label">Password</label>
-                            <input type="password" className="form-control" value={password} onChange={(event) => setPassword(event.target.value)} />
+                            <input type="password" className="form-control" value={password} disabled onChange={(event) => setPassword(event.target.value)} />
                         </div>
 
                         <div className="col-md-6">
@@ -116,9 +129,9 @@ const ModelCreateUser = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => submitCreateUser()}>
+                    <Button variant="primary" onClick={() => submitUpdateUser()}>
 
-                        Save
+                        Update
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -126,4 +139,4 @@ const ModelCreateUser = (props) => {
     );
 };
 
-export default ModelCreateUser;
+export default ModalUpdateUser;

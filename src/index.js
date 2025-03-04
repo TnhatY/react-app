@@ -9,6 +9,8 @@ import User from './components/User/User';
 import Admin from './components/Admin/Admin';
 import HomePage from './components/Home/HomePage';
 import ManagerUser from './components/Admin/Manager-user';
+import Dashboard from './components/Admin/Dashboard';
+import ModelCreateUser from './components/Admin/ModalCreateUser';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -22,8 +24,8 @@ root.render(
           <Route path='users' element={<User />}></Route>
 
         </Route>
-        <Route path='/admins' element={<Admin />}>
-          <Route path='user' element={<ManagerUser />}></Route>
+        <Route path='/admins/manage-user' element={<Admin />}>
+          <Route index element={<ManagerUser />}></Route>
         </Route>
 
       </Routes>

@@ -9,7 +9,6 @@ const Admin = (props) => {
     return (
         <div>
             <div>Quản lý user</div>
-            <button><NavLink to='/admins/user'>Add User</NavLink></button>
             <div>
                 <Toaster position="top-right" richColors />
                 <Outlet />
